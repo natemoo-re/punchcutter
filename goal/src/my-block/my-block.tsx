@@ -1,4 +1,10 @@
-import { Block, Attribute } from 'punchcutter';
+import { Block, WP } from '@punchcutter/core';
+const { RichText, BlockControls, AlignmentToolbar } = wp.editor;
+
+interface Attributes {
+    content: string[];
+    alignment: 'left'|'right'|'center';
+}
 
 @Block({
     title: 'My Block',
@@ -9,20 +15,46 @@ import { Block, Attribute } from 'punchcutter';
         editor: 'my-block.editor.scss'
     }
 })
-export class MyBlock {
+export class MyBlock extends WP.Block<Attributes> {
 
-    @Attribute({ source: 'text', selector: 'p' }) firstName: string;
-    @Attribute() lastName: string;
+    edit({ attributes, className, setAttributes }: WP.props<Attributes>) {
+        const { alignment, content } = attributes;
 
-	edit(props: any) {
-		return (
-			<p className={ props.className }>Hello World! — from the editor</p>
-		);
+        function onChangeContent(newContent) {
+            setAttributes({ content: newContent });
+        }
+
+        function onChangeAlignment(newAlignment) {
+            setAttributes({ alignment: newAlignment });
+        }
+
+        return [
+            <BlockControls key="controls">
+				<AlignmentToolbar
+					value={ alignment }
+					onChange={ onChangeAlignment }
+				/>
+			</BlockControls>,
+            <RichText
+				key="editable"
+				tagName="p"
+				className={ className }
+				style={ { textAlign: alignment } }
+				onChange={ onChangeContent }
+				value={ content }
+            />
+        ];
     }
     
-    save(props: any) {
+    save({ attributes, className }: WP.props<Attributes>) {
+        const { content, alignment } = attributes;
         return (
-            <p className={props.className}>Hello World! — from the frontend</p>
-        );
+            <RichText
+                className={className}
+                style={{ textAlign: alignment }}
+                value={content}
+                tagName="p"
+            />
+        )
     }
 }

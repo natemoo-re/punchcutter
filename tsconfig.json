@@ -1,7 +1,22 @@
 {
     "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "allowUnreachableCode": false,
+        "noImplicitAny": true,
+        "declaration": false,
         "experimentalDecorators": true,
-        "jsx": "preserve",
-        "jsxFactory": "wp.createElement"
+        "jsx": "react",
+        "jsxFactory": "wp.createElement",
+        "lib": [
+            "es2015",
+            "dom"
+        ]
     },
+    "include": [
+        "src",
+        "node_modules/@types"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }
