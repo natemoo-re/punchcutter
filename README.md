@@ -1,2 +1,2 @@
-# punchcutter
-A compiler for building WordPress Gutenberg
+# PunchCutter
+A compiler for WordPress Gutenberg blocks
